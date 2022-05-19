@@ -7,4 +7,7 @@ public interface GameController {
     void notifyWinner();
     void notifyLooser();
     void notifyCell(int position, Cell cell);
+
+    String askQuestion(String question);
+    int askIntQuestion(String question);
 }

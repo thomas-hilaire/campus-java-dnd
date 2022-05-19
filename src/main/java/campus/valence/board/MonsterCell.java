@@ -17,9 +17,9 @@ public class MonsterCell implements Cell {
 
     @Override
     public CellStatus open(Hero hero) {
-        this.points -= hero.getStrenght();
+        points -= hero.getStrenght();
 
-        if (this.points <= 0) {
+        if (points < 1) {
             return CellStatus.CLEAR;
         }
 
