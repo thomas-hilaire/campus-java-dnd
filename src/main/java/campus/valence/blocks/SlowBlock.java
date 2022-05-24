@@ -4,16 +4,13 @@ package campus.valence.blocks;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Set;
 
 
 public class SlowBlock extends Blocks{
-    private JPanel destroyer;
-    private Set<Blocks> blocks;
+
     public SlowBlock(JPanel destroyer, Set<Blocks> blocks) {
-        this.destroyer = destroyer;
-        this.blocks = blocks;
+        super(destroyer,blocks);
         setHeath(1);
         setWidth(20);
         setHeight(20);
@@ -23,20 +20,9 @@ public class SlowBlock extends Blocks{
         panel.setBounds(getX(), getY(), getWidth(), getHeight());
         panel.setBackground(Color.red);
 
-        Timer timer = new Timer(100, this);
-        timer.setRepeats(true);
-        timer.start();
+
     }
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        moveForward();
-      for (Blocks block : blocks) {
-          if (block.getPanel().getBounds().intersects(destroyer.getBounds())) {
-              System.out.println("game over");
-              System.exit(0);
-          }
-      }
-    }
+
 
 
 }
