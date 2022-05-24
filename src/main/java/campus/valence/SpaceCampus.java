@@ -1,13 +1,23 @@
 package campus.valence;
 
+import campus.valence.blocks.Blocks;
+import campus.valence.blocks.FastBlock;
+import campus.valence.blocks.HugeBlock;
+import campus.valence.blocks.SlowBlock;
+
+
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Set;
 
-public class SpaceCampus {
+public class SpaceCampus extends AbstractAction {
 
+    private final Fireballs fireballs;
     private JFrame frame;
     private JPanel panel;
-    private Destroyer destroyer;
+    private JPanel destroyer;
+    private Set<Blocks> blocks = new HashSet<>();
 
     SpaceCampus() {
         panel = new JPanel();
@@ -18,9 +28,11 @@ public class SpaceCampus {
         frame.setTitle("SPACE CAMPUS");
         frame.setSize(400, 600);
         frame.setContentPane(panel);
-
-        createDestroyer();
+        fireballs = new Fireballs(this.panel, blocks);
         createBlocks();
+        createDestroyer();
+
+
     }
 
     public void launch() {
@@ -28,20 +40,33 @@ public class SpaceCampus {
     }
 
     private void createDestroyer() {
-        destroyer = new Destroyer();
+        Destroyer destroyer = new Destroyer(fireballs);
+        this.destroyer = destroyer.getPanel();
         this.panel.add(destroyer.getPanel());
         this.panel.addKeyListener(new GameKeyListener(destroyer));
     }
 
     private void createBlocks() {
-        JPanel panel1 = new JPanel();
-        panel1.setBounds(5, 5, 80, 30);
-        panel1.setBackground(Color.BLUE);
-        this.panel.add(panel1);
 
-        JPanel panel2 = new JPanel();
-        panel2.setBounds(100, 5, 80, 30);
-        panel2.setBackground(Color.BLUE);
-        this.panel.add(panel2);
+
+
+        Timer timer = new Timer(700, this);
+        timer.setRepeats(true);
+        timer.start();
     }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        int random = (int) Math.floor(Math.random()*5);
+        Blocks newBlock = null;
+        if (random > 1){
+            newBlock = new SlowBlock(this.destroyer,blocks);
+        } else {
+            newBlock = new HugeBlock(this.destroyer,blocks);
+        }
+
+        this.panel.add(newBlock.getPanel());
+        this.blocks.add(newBlock);
+    }
+
 }
