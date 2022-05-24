@@ -48,13 +48,15 @@ public class Fireballs extends AbstractAction {
         for (Fireball fireball : fireballs) {
             for (Blocks block : blocks){
                 if (fireball.getPanel().getBounds().intersects(block.getPanel().getBounds())) {
-                    block.setHeath(block.getHeath()-1);
-                    if (block.getHeath()<=0) {
+                    block.setHealth(block.getHealth()-1);
+                    if (block.getHealth()<=0) {
                         enemiesKilled++;
                         panel.remove(block.getPanel());
                         blockToRemove = block;
                         jlabel.setText(String.valueOf(enemiesKilled));
                         panel.add(jlabel);
+                    } else {
+                        block.getLifePoints().setText(String.valueOf(block.getHealth()));
                     }
                     fireballToRemove = fireball.getPanel();
                     fireballs.remove(fireball);

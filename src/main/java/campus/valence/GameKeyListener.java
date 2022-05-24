@@ -15,8 +15,6 @@ public class GameKeyListener implements KeyListener {
     public void keyPressed(KeyEvent keyEvent) {
         if (keyEvent.getKeyCode() == 37) {
             destroyer.moveLeft();
-        } else if (keyEvent.getKeyCode() == 38) {
-            destroyer.destroyerFire();
         } else if (keyEvent.getKeyCode() == 39) {
             destroyer.moveRight();
         }

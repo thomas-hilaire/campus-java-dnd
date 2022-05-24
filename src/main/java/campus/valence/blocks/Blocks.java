@@ -8,10 +8,11 @@ import java.util.Set;
 
 public class Blocks extends AbstractAction {
     JPanel panel = new JPanel();
+    JLabel lifePoints = new JLabel("1");
     private JPanel destroyer;
     private Set<Blocks> blocks;
 
-    private int heath;
+    private int health;
     private int speed;
     private int width;
     private int height;
@@ -44,17 +45,24 @@ public class Blocks extends AbstractAction {
 
 
 
-    public int getHeath() {
-        return heath;
+    public int getHealth() {
+        return health;
     }
 
-    public void setHeath(int heath) {
-        this.heath = heath;
+    public void setHealth(int health) {
+        this.health = health;
     }
     public JPanel getPanel() {
         return panel;
     }
 
+    public JLabel getLifePoints() {
+        return lifePoints;
+    }
+
+    public void setLifePoints(JLabel lifePoints) {
+        this.lifePoints = lifePoints;
+    }
     public int getSpeed() {
         return speed;
     }

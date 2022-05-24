@@ -59,10 +59,13 @@ public class SpaceCampus extends AbstractAction {
     public void actionPerformed(ActionEvent actionEvent) {
         int random = (int) Math.floor(Math.random()*5);
         Blocks newBlock = null;
-        if (random > 1){
-            newBlock = new SlowBlock(this.destroyer,blocks);
-        } else {
+        if (random > 3){
             newBlock = new HugeBlock(this.destroyer,blocks);
+
+        } else if (random >1){
+            newBlock = new FastBlock(this.destroyer,blocks);
+        } else {
+            newBlock = new SlowBlock(this.destroyer,blocks);
         }
 
         this.panel.add(newBlock.getPanel());
