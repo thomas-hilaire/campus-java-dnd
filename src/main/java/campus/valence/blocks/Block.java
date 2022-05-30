@@ -1,18 +1,21 @@
 package campus.valence.blocks;
 
+import campus.valence.Destroyer;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Set;
+import java.util.zip.DeflaterInputStream;
+
+public abstract class Block extends AbstractAction {
+    JPanel oneBlockPanel = new JPanel();
+    JPanel panel;
 
 
-public class Blocks extends AbstractAction {
-    JPanel panel = new JPanel();
-    JLabel lifePoints = new JLabel("1");
-    private JPanel destroyer;
-    private Set<Blocks> blocks;
+    private Destroyer destroyer;
 
-    private int health;
+
+
     private int speed;
     private int width;
     private int height;
@@ -21,13 +24,14 @@ public class Blocks extends AbstractAction {
 
 
     public void moveForward() {
-        panel.setLocation(getX(), getY() + getSpeed());
+        oneBlockPanel.setLocation(getX(), getY() + getSpeed());
         setY(getY() + getSpeed());
     }
-    Blocks(JPanel destroyer, Set<Blocks> blocks) {
+
+    public Block(Destroyer destroyer, JPanel panel) {
         this.destroyer = destroyer;
-        this.blocks = blocks;
-        Timer timer = new Timer(100, this);
+        this.panel = panel;
+        Timer timer = new Timer(15, this);
         timer.setRepeats(true);
         timer.start();
     }
@@ -35,34 +39,26 @@ public class Blocks extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         moveForward();
-        for (Blocks block : blocks) {
-            if (block.getPanel().getBounds().intersects(destroyer.getBounds())) {
-                System.out.println("game over");
-                System.exit(0);
-            }
+        if (getOneBlockPanel().getBounds().intersects(destroyer.getPanel().getBounds())) {
+            panel.remove(getOneBlockPanel());
+            blockInteraction();
         }
     }
 
+    public abstract void blockInteraction();
 
 
-    public int getHealth() {
-        return health;
+    public Destroyer getDestroyer() {
+        return destroyer;
+    }
+    public JPanel getOneBlockPanel() {
+        return oneBlockPanel;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
     public JPanel getPanel() {
         return panel;
     }
 
-    public JLabel getLifePoints() {
-        return lifePoints;
-    }
-
-    public void setLifePoints(JLabel lifePoints) {
-        this.lifePoints = lifePoints;
-    }
     public int getSpeed() {
         return speed;
     }

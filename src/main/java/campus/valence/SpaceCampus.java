@@ -1,9 +1,8 @@
 package campus.valence;
 
-import campus.valence.blocks.Blocks;
-import campus.valence.blocks.FastBlock;
-import campus.valence.blocks.HugeBlock;
-import campus.valence.blocks.SlowBlock;
+import campus.valence.blocks.bonusBlocks.BonusBlock;
+import campus.valence.blocks.bonusBlocks.DoubleShootingBlock;
+import campus.valence.blocks.enemiesBlocks.*;
 
 
 import javax.swing.*;
@@ -16,8 +15,10 @@ public class SpaceCampus extends AbstractAction {
     private final Fireballs fireballs;
     private JFrame frame;
     private JPanel panel;
-    private JPanel destroyer;
-    private Set<Blocks> blocks = new HashSet<>();
+    private Destroyer destroyer;
+    private Set<EnemyBlock> enemyBlocks = new HashSet<>();
+    static int score = 0;
+    static int bossScore = 50;
 
     SpaceCampus() {
         panel = new JPanel();
@@ -28,7 +29,7 @@ public class SpaceCampus extends AbstractAction {
         frame.setTitle("SPACE CAMPUS");
         frame.setSize(400, 600);
         frame.setContentPane(panel);
-        fireballs = new Fireballs(this.panel, blocks);
+        fireballs = new Fireballs(this.panel, enemyBlocks);
         createBlocks();
         createDestroyer();
 
@@ -41,13 +42,12 @@ public class SpaceCampus extends AbstractAction {
 
     private void createDestroyer() {
         Destroyer destroyer = new Destroyer(fireballs);
-        this.destroyer = destroyer.getPanel();
+        this.destroyer = destroyer;
         this.panel.add(destroyer.getPanel());
         this.panel.addKeyListener(new GameKeyListener(destroyer));
     }
 
     private void createBlocks() {
-
 
 
         Timer timer = new Timer(700, this);
@@ -57,19 +57,32 @@ public class SpaceCampus extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        int random = (int) Math.floor(Math.random()*5);
-        Blocks newBlock = null;
-        if (random > 3){
-            newBlock = new HugeBlock(this.destroyer,blocks);
-
-        } else if (random >1){
-            newBlock = new FastBlock(this.destroyer,blocks);
+        EnemyBlock newEnemyBlock;
+        score = fireballs.getScore();
+        if (score >= bossScore) {
+            bossScore += 50;
+            newEnemyBlock = new BossBlock(this.destroyer,this.panel);
         } else {
-            newBlock = new SlowBlock(this.destroyer,blocks);
+            int random = (int) Math.floor(Math.random() * 5);
+            if (random > 3) {
+                newEnemyBlock = new HugeBlock(this.destroyer, this.panel);
+            } else if (random > 1) {
+                newEnemyBlock = new FastBlock(this.destroyer, this.panel);
+            } else {
+                newEnemyBlock = new SlowBlock(this.destroyer, this.panel);
+            }
+        }
+        this.panel.add(newEnemyBlock.getOneBlockPanel());
+        this.enemyBlocks.add(newEnemyBlock);
+        BonusBlock newBonusBlock = null;
+        int random = (int) Math.floor(Math.random() * 15);
+        if (random == 0) {
+            newBonusBlock = new DoubleShootingBlock(this.destroyer, this.panel);
+        }
+        if (newBonusBlock != null) {
+            this.panel.add(newBonusBlock.getOneBlockPanel());
         }
 
-        this.panel.add(newBlock.getPanel());
-        this.blocks.add(newBlock);
     }
 
 }

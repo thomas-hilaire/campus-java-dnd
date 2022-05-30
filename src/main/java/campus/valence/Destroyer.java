@@ -12,6 +12,10 @@ public class Destroyer extends AbstractAction {
 
     private Fireballs fireballs;
 
+    boolean doubleShootingBonus = false;
+
+
+
     Destroyer(Fireballs fireballs) {
         this.fireballs = fireballs;
         panel = new JPanel();
@@ -23,6 +27,7 @@ public class Destroyer extends AbstractAction {
         timer.start();
 
     }
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         destroyerFire();
@@ -47,9 +52,18 @@ public class Destroyer extends AbstractAction {
 
     public void destroyerFire() {
         int x = panel.getX();
-        this.fireballs.send(new BigFireball(x));
+        if (doubleShootingBonus) {
+            this.fireballs.send(new BigFireball(x-10));
+            this.fireballs.send(new BigFireball(x+10));
+        } else {
+            this.fireballs.send(new BigFireball(x));
+        }
     }
 
+
+    public void setDoubleShootingBonus(boolean doubleShootingBonus) {
+        this.doubleShootingBonus = doubleShootingBonus;
+    }
     public JPanel getPanel() {
         return panel;
     }
